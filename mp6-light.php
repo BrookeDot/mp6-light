@@ -35,13 +35,13 @@ add_action('admin_enqueue_scripts', 'mp6_light_admin_theme_style');
 * @version 0.1
 * @since 1.0
 */
-function my_admin_notice(){
+function mp6_light_admin_notice(){
 	
 	if(!(mp6_light_plugin_check()) && current_user_can('install_plugins')){ 
 		_e('<div class="error"><p>Please install the <a href="http://wordpress.org/plugins/mp6/"> MP6 Plugin</a> or disable MP6 Light</p></div>','mp6-light');
     	}
 }
-add_action('admin_notices', 'my_admin_notice');
+add_action('admin_notices', 'mp6_light_admin_notice');
 
 
 /**
