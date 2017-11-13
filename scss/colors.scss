@@ -1,0 +1,42 @@
+$base-color: #eeeeee;
+$button-color: #50A9CF;
+$text-color: #555555;
+$icon-color: #888888;
+
+$highlight-color: #333333;
+$notification-color: #50A9CF;
+
+// Menu Highlight/hover colors
+$menu-highlight-text: #50A9CF;
+$menu-highlight-icon: #50A9CF;
+$menu-highlight-background: #cccccc;
+
+// Menu Bubble
+$menu-bubble-text: #222222 ;
+$menu-bubble-background: #fcfcfc;
+
+// Submenu background
+$menu-submenu-background: darken( $base-color, 3% ) !default;
+
+
+// Menu Current Colors
+$menu-current-text: #ffffff;
+$menu-current-icon: #ffffff;
+$menu-current-background: #50A9CF;
+
+
+/* Overrides */
+// Prevent dashicon from change when current menu is hovered.
+#adminmenu li.wp-has-current-submenu:hover div.wp-menu-image:before {
+  color:#FFFFFF !important;
+}
+
+//Change main body background to white
+#wpcontent,body{ background-color: #ffffff !important;}
+
+//update some white elements to light gray
+.welcome-panel, .postbox, .alternate, .striped > tbody > :nth-child(2n), ul.striped > :nth-child(2n+1){
+  background: #eeeeee !important;
+}
+
+@import "admin";
