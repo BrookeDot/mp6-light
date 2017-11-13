@@ -1,64 +1,83 @@
 <?php
 /*
-Plugin Name: MP6-Light
+Plugin Name: MP6 Light
 Plugin URI: http://wordpress.org/extend/plugins/mp6/
-Description: This is a plugin changes the default styles of MP6 to a lighter theme. MP6 plugin is also required.
-Version: 1.0 
-Author: BandonRandon
-Author URI: http://bandonrandon.wordpress.com
+Description: This is a plugin changesthe default admin style to a lighter theme.
+Version: 1.0
+Author: Brooke Dukes
+Author URI: http://brooke.codes
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Current Version based on MP6 1.8
+Copyright 2017 Brooke Dukes
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-
-/**
-* Add MP6-Light Styles
-* This function adds the MP6-light styles if MP6 is installed and active. 
-*
-* @version 0.1
-* @since 1.0
-*/
-function mp6_light_admin_theme_style() {
-    	    
-       if (mp6_light_plugin_check()) {
-       	       wp_enqueue_style('mp6-light', plugins_url( 'css/colors-mp6-light.css', __FILE__ ));
-    	   }
-}
-add_action('admin_enqueue_scripts', 'mp6_light_admin_theme_style');
-
-/**
-* MP6 Error
-* This function throws an error if MP6 is not active. 
-*
-* @version 0.1
-* @since 1.0
-*/
-function mp6_light_admin_notice(){
-	
-	if(!(mp6_light_plugin_check()) && current_user_can('install_plugins')){ 
-		_e('<div class="error"><p>Please install the <a href="http://wordpress.org/plugins/mp6/"> MP6 Plugin</a> or disable MP6 Light</p></div>','mp6-light');
-    	}
-}
-add_action('admin_notices', 'mp6_light_admin_notice');
+defined( 'ABSPATH' ) or die();
 
 
-/**
-* Check for MP6
-* This function makes sure that MP6 is active. It it used to throw an error if MP6 is not installed. 
-* Most likely will be removed when MP6 becomes default theme around 3.7
-*
-* @version 0.1
-* @since 1.0
-*/
-function mp6_light_plugin_check(){ 
-	
-	global $_wp_admin_css_colors;
+class mp6_light_color_scheme {
 
-	if ($_wp_admin_css_colors['mp6']) {
-		return true;
+
+	function __construct() {
+		add_action( 'admin_init' , array( $this, 'add_colors' ) );
 	}
-	
-	else return;
+
+	/**
+	 * Register color scheme.
+   *
+   * @since 1.1
+   * @source Admin Color Schemes
+   * @author Kelly Dwan, Mel Choyce, Dave Whitley, Kate Whitley
+	 */
+	function add_colors() {
+		$suffix = is_rtl() ? '-rtl' : '';
+
+		wp_admin_css_color(
+			'mp6_light', __( 'MP6 Light', 'admin_schemes' ),
+			plugins_url( "css/colors$suffix.css", __FILE__ ),
+			array( '#eeeeee', '#cfe1ef', '#222222', '#2ea2cc' ),
+			array( 'base' => '#f1f2f3', 'focus' => '#fff', 'current' => '#fff' )
+		);
+
+	}
+
 }
+// add color scheme
+global $mp6_light_color_schme;
+$mp6_light_color_schme = new mp6_light_color_scheme;
+
+/**
+ * Force Color Scheme
+ * If FORCE_MP6_LIGHT is true remove all colorscheme options and force all users to mp6 light
+ * @since 1.1
+ */
+if( defined( 'FORCE_MP6_LIGHT' ) ) {
+  function mp6_force_color_scheme(){
+    if ( ! is_admin() ) {
+      return;
+    }
+    else{
+
+  }
+
+  add_filter( 'admin_init', 'mp6_force_color_scheme' );
+}
+
+/**
+ * Revert on Uninstall
+ * @since 1.1
+ */
